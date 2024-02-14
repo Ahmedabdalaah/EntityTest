@@ -41,7 +41,7 @@ namespace EntityTest.Migrations
 
                     b.HasIndex("studentId");
 
-                    b.ToTable("attendances");
+                    b.ToTable("tablename", "tablescheme");
                 });
 
             modelBuilder.Entity("EntityTest.Models.Book", b =>
@@ -87,6 +87,35 @@ namespace EntityTest.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("departments");
+                });
+
+            modelBuilder.Entity("EntityTest.Models.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GenderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("genders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GenderName = "Male"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GenderName = "Female"
+                        });
                 });
 
             modelBuilder.Entity("EntityTest.Models.Grade", b =>
@@ -140,12 +169,15 @@ namespace EntityTest.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("departmentId")
+                    b.Property<int?>("departmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("departmentId");
 
@@ -202,8 +234,7 @@ namespace EntityTest.Migrations
                     b.HasOne("EntityTest.Models.Department", "department")
                         .WithMany("students")
                         .HasForeignKey("departmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("department");
                 });

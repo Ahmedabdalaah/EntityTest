@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityTest.Models
 {
+     [Index("Name" , IsUnique =true)]
     internal class Student
     {
         [Key]
@@ -19,7 +21,7 @@ namespace EntityTest.Models
         public DateTime BirthDate { get; set; }
         public Grade grade { get; set; }
         [ForeignKey("department")]
-        public int departmentId { get; set; }
+        public int? departmentId { get; set; }
         public Department department { get; set; }
         public ICollection<StudentBook> books { get; set; }
         public ICollection<Attendance> attendances { get; set; }    

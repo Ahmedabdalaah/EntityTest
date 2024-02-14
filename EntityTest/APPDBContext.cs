@@ -20,9 +20,12 @@ namespace EntityTest
         public DbSet<Book> books { get; set; }
         public DbSet<StudentBook> studentBooks { get; set; }
         public DbSet<Attendance> attendances { get; set; }
+        public DbSet<Gender> genders { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Student>().HasIndex(x =>  x.Name).IsUnique();
             /*
             modelBuilder.Entity<Department>()
                 .HasMany(p => p.students)
@@ -41,7 +44,10 @@ namespace EntityTest
                 relationships.DeleteBehavior = DeleteBehavior.Restrict;
             }
            // modelBuilder.Ignore<Attendance>();
-           modelBuilder.Entity<Attendance>().ToTable("tablename","tablescheme"); 
+           modelBuilder.Entity<Attendance>().ToTable("tablename","tablescheme");
+            modelBuilder.Entity<Gender>().HasData(
+                new Gender { Id=1, GenderName="Male"},
+                new Gender { Id=2, GenderName="Female"});
         }
     }
 }
